@@ -1,29 +1,13 @@
-/*
-
-☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
-                                                 
-  _________ ___ ___ ._______   _________    
- /   _____//   |   \|   \   \ /   /  _  \   
- \_____  \/    ~    \   |\   Y   /  /_\  \  
- /        \    Y    /   | \     /    |    \ 
-/_______  /\___|_  /|___|  \___/\____|__  / 
-        \/       \/                     \/  
-                    
-DISCORD :  https://discord.com/invite/xQF9f9yUEM                   
-YouTube : https://www.youtube.com/@GlaceYT                         
-                                                                       
-☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
-
-
-*/
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
+const { joinVoiceChannel } = require('@discordjs/voice');
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
 const client = new Client({
   intents: [
-    GatewayIntentBits.Guilds
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildVoiceStates  // Tambahkan intent untuk voice states
   ],
 });
 
@@ -38,7 +22,7 @@ app.listen(port, () => {
 });
 
 const statusMessages = ["⚠️ Mohon Perhatian", "👥 Bagi Seluruh Warga", "📝 Baca Peraturan Desa!"];
-const statusTypes = [ 'dnd', 'idle'];
+const statusTypes = ['dnd', 'idle'];
 let currentStatusIndex = 0;
 let currentTypeIndex = 0;
 
@@ -72,31 +56,30 @@ function heartbeat() {
   }, 30000);
 }
 
+async function joinVoice() {
+  const guild = client.guilds.cache.get(process.env.GUILD_ID);  // ID dari server (guild)
+  const channel = guild.channels.cache.get(process.env.CHANNEL_ID);  // ID dari voice channel
+
+  if (channel) {
+    joinVoiceChannel({
+      channelId: channel.id,
+      guildId: guild.id,
+      adapterCreator: guild.voiceAdapterCreator,
+      selfMute: false,  // Pilih apakah bot mute atau tidak
+      selfDeaf: true   // Pilih apakah bot deaf atau tidak
+    });
+    console.log('\x1b[32m[ VOICE ]\x1b[0m', `Joined voice channel: ${channel.name}`);
+  } else {
+    console.error('\x1b[31m[ ERROR ]\x1b[0m', 'Voice channel not found.');
+  }
+}
+
 client.once('ready', () => {
   console.log('\x1b[36m[ INFO ]\x1b[0m', `\x1b[34mPing: ${client.ws.ping} ms \x1b[0m`);
   updateStatus();
   setInterval(updateStatus, 10000);
   heartbeat();
+  joinVoice();  // Memanggil fungsi joinVoice saat bot siap
 });
 
 login();
-
-  
-/*
-
-☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
-                                                 
-  _________ ___ ___ ._______   _________    
- /   _____//   |   \|   \   \ /   /  _  \   
- \_____  \/    ~    \   |\   Y   /  /_\  \  
- /        \    Y    /   | \     /    |    \ 
-/_______  /\___|_  /|___|  \___/\____|__  / 
-        \/       \/                     \/  
-                    
-DISCORD :  https://discord.com/invite/xQF9f9yUEM                   
-YouTube : https://www.youtube.com/@GlaceYT                         
-                                                                       
-☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
-
-
-*/
