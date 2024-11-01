@@ -48,8 +48,8 @@ async function login() {
 
     // Bergabung ke voice channel
     joinVoiceChannel({
-      channelId: channel.id,
       guildId: guild.id,
+      channelId: channel.id,
       adapterCreator: guild.voiceAdapterCreator,
     });
     console.log(`\x1b[36m[ INFO ]\x1b[0m Bot joined voice channel: ${channel.name}`);
