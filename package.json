@@ -1,30 +1,17 @@
 {
   "name": "Bot Ghost Status Remover",
   "version": "3.0.0",
-  "description": "dynamic status and heartbeat",
+  "description": "dynamic status, heartbeat, and 24/7 voice connection",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "SHIVA", 
-  "license": "MIT", 
+  "author": "SHIVA",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^14.16.1",
     "dotenv": "^16.4.5",
-    "express": "^4.20.0"
-  }
-}
-{
-  "name": "discord-bot",
-  "version": "1.0.0",
-  "description": "My Discord bot hosted on Render.com",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "discord.js": "^14.0.0",
-    "dotenv": "^16.0.0",
+    "express": "^4.20.0",
     "@discordjs/voice": "^0.8.0"
   }
 }
