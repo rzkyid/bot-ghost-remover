@@ -97,4 +97,22 @@ client.once('ready', () => {
   heartbeat();
 });
 
+client.once('ready', () => {
+  const guild = client.guilds.cache.get(process.env.GUILD_ID);
+  if (!guild) {
+    console.error("Guild (Server) not found.");
+    return;
+  }
+  
+  const channel = guild.channels.cache.get(process.env.CHANNEL_ID);
+  if (!channel) {
+    console.error("Voice Channel not found.");
+    return;
+  }
+  
+  console.log("Bot is ready and found the channel!");
+  channel.join();
+});
+
+
 login();
